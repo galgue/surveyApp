@@ -1,37 +1,20 @@
-import type { UserProfile } from '@auth0/nextjs-auth0';
 import type { InferGetServerSidePropsType } from 'next';
-import { withPageAuthRequiredAndUser } from 'utils/auth0';
+import { withUser } from 'utils/auth0';
 
 const Home = ({
-	user, customProp
+	user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-
-	if(!user) {
-		return <>
-			damn
-		</>
-	}
-	(user as UserProfile)
-
-	return (
-		<div className='flex flex-col gap-2'>
-			{Object.entries(user).map(([k, v]) => (
-				<div key={k}>{`${k}: ${v}`}</div>
-			))}
-		</div>
-	);
+	return <div className='flex flex-col gap-2'>welcome {user?.nickname}</div>;
 };
 
-export const getServerSideProps = withPageAuthRequiredAndUser({
-	async getServerSideProps({user}) {
-		console.log(user);
+export const getServerSideProps = withUser({
+	getServerSideProps: async ({ user }) => {
 		return {
 			props: {
-				customProp: 'dada',
-			}
-		}
+				user,
+			},
+		};
 	},
-	returnTo: '/login',
 });
 
 export default Home;

@@ -2,13 +2,37 @@ import { withTRPC } from '@trpc/next';
 import type { AppType } from 'next/dist/shared/lib/utils';
 import type { AppRouter } from 'server/routers/app';
 import 'styles/globals.css';
-import { UserProvider } from '@auth0/nextjs-auth0';
+import { UserProvider, useUser } from '@auth0/nextjs-auth0';
+import Link from 'next/link';
+
+const TopHeader = () => {
+	const { user, isLoading, error } = useUser();
+
+	return (
+		<div className='w-screen h-24 shadow-md bg-emerald-600 flex items-center'>
+			<div className='flex-1'></div>
+			<div className='text-5xl flex-1'>Survey App</div>
+			<div className='flex-1'>
+				{isLoading && <>loading</>}
+				{!isLoading && !user && <Link href='/login'>login</Link>}
+				{!!user && (
+					<div>
+						<a href='/api/auth/logout'>Logout</a>
+					</div>
+				)}
+			</div>
+		</div>
+	);
+};
 
 const MyApp: AppType = ({ Component, pageProps }) => {
 	return (
 		<UserProvider>
-			<div className='w-screen h-screen'>
-				<Component {...pageProps} />
+			<div className='w-screen h-screen flex flex-col'>
+				<TopHeader />
+				<div className='flex-grow'>
+					<Component {...pageProps} />
+				</div>
 			</div>
 		</UserProvider>
 	);
