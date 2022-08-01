@@ -1,4 +1,3 @@
-import { withPageAuthRequired, getSession } from '@auth0/nextjs-auth0';
 import type { UserProfile } from '@auth0/nextjs-auth0';
 import type { InferGetServerSidePropsType } from 'next';
 import { withPageAuthRequiredAndUser } from 'utils/auth0';
