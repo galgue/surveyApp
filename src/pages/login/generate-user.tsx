@@ -10,8 +10,6 @@ const GenerateUserPage = () => {
 export const getServerSideProps = withUser({
 	getServerSideProps: async ({ user }) => {
 
-		console.log('step 1: ', user);
-
 		if(!user || !user.sub) {
 			return {
 				redirect: {
@@ -27,8 +25,6 @@ export const getServerSideProps = withUser({
 			},
 		});
 
-		console.log('step 2: ', userInDb);
-
 		if (!userInDb) {
 			userInDb = await prisma.user.create({
 				data: {
@@ -37,8 +33,6 @@ export const getServerSideProps = withUser({
 				},
 			});
 		}
-
-		console.log('step 3: ', userInDb);
 
 		if(!userInDb) {
 			return {
