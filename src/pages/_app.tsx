@@ -51,6 +51,13 @@ export default withTRPC<AppRouter>({
 
 		return {
 			url,
+			headers() {
+				return {
+					// optional - inform server that it's an ssr request
+					...ctx?.req?.headers,
+					'x-ssr': '1',
+				};
+			},
 			/**
 			 * @link https://react-query.tanstack.com/reference/QueryClient
 			 */

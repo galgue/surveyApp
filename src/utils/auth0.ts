@@ -58,13 +58,13 @@ export const withUser = <P>({
 	redirectToLogin = true,
 }: {
 	getServerSideProps: GetServerSidePropsWithUser<P>;
-	redirectToLogin?: boolean
+	redirectToLogin?: boolean;
 }) => {
 	const getServerSidePropsWithUser: GetServerSideProps<P> = async (context) => {
 		const user = getSession(context.req, context.res)?.user as
 			| UserProfile
 			| undefined;
-		if (!user && (redirectToLogin === true)) {
+		if (!user && redirectToLogin === true) {
 			const redirect: Redirect = {
 				destination: '/login',
 				permanent: true,
