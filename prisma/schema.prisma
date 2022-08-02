@@ -2,17 +2,43 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
 model User {
-  id              String       @id
-  name            String    @db.VarChar(255)
+  id            String          @id
+  name          String          @db.VarChar(255)
+  surveyCreate  Survey[]
+  UserOnOptions UserOnOptions[]
+}
+
+model Survey {
+  id        String   @id @default(uuid())
+  title     String
+  createAt  DateTime @default(now())
+  creatorId String
+  creator   User     @relation(fields: [creatorId], references: [id])
+}
+
+model SurveyOption {
+  id            String          @id @default(uuid())
+  value         String
+  surveyId      String
+  UserOnOptions UserOnOptions[]
+}
+
+model UserOnOptions {
+  userId   String
+  user     User         @relation(fields: [userId], references: [id])
+  optionId String
+  option   SurveyOption @relation(fields: [optionId], references: [id])
+
+  @@id([userId, optionId])
 }

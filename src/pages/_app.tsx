@@ -4,6 +4,7 @@ import type { AppRouter } from 'server/routers/app';
 import 'styles/globals.css';
 import { UserProvider, useUser } from '@auth0/nextjs-auth0';
 import Link from 'next/link';
+import superjson from 'superjson';
 
 const TopHeader = () => {
 	const { user, isLoading, error } = useUser();
